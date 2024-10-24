@@ -5,9 +5,13 @@ import {
   Text,
   TouchableWithoutFeedback,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { Link } from "react-router-native";
 import Constants from "expo-constants";
+import { useQuery } from "@apollo/client";
+import { ME } from "../graphql/queries";
+import useLogOut from "../hooks/useLogOut";
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +26,9 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
+  const me = useQuery(ME);
+  const [logout] = useLogOut();
+  
   return (
     <TouchableWithoutFeedback>
       <View style={styles.container}>
@@ -29,9 +36,15 @@ const AppBar = () => {
           <Link to="/">
             <Text style={styles.text}>Repositories</Text>
           </Link>
-          <Link to="SigIn">
-            <Text style={styles.text}>Sig In</Text>
-          </Link>
+          {me.data.me === null ? (
+            <Link to="SigIn">
+              <Text style={styles.text}>Sig In</Text>
+            </Link>
+          ) : (
+            <Link to="/" onPress={logout}>
+              <Text style={styles.text}>Log Out</Text>
+            </Link>
+          )}
         </ScrollView>
       </View>
     </TouchableWithoutFeedback>

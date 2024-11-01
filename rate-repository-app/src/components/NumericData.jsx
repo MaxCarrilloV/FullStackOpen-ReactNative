@@ -3,6 +3,7 @@ import Text from "./Text";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    marginTop:10
   },
   flexText: {
     flexDirection: "column",

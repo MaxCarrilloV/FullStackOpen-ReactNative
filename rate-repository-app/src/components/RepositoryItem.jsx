@@ -1,9 +1,16 @@
-import { StyleSheet, View, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigate } from "react-router-native";
 import Text from "./Text";
 import NumericData from "./NumericData";
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    backgroundColor:"white"
   },
   titleFlex: {
     flexDirection: "row",
@@ -24,29 +31,48 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderRadius: 3,
   },
+  buttonContainer: {
+    backgroundColor: "#0366d6",
+    color: "white",
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 5,
+    textAlign: "center",
+    borderRadius: 3,
+    marginHorizontal:20
+  },
+  titleContainer:{
+    paddingEnd:20,
+    marginRight:20
+  }
 });
 
 const RepositoryItem = ({ item }) => {
+  const navigate = useNavigate();
+  const OnPress = () => {
+    navigate(`/${item.id}`);
+  };
   return (
-    <View style={styles.container}>
-      <View style={styles.titleFlex}>
-        <Image
-          style={styles.tinyLogo}
-          source={{
-            uri: `${item.ownerAvatarUrl}`,
-          }}
-        />
-        <View>
-          <Text fontWeight="bold" fontSize="subheading">
-            {item.fullName}
-          </Text>
-          <Text color="textSecondary">{item.description}</Text>
-          <Text style={styles.textContainer}>{item.language}</Text>
+    <TouchableOpacity onPress={OnPress}>
+      <View testID="repositoryItem" style={styles.container}>
+        <View style={styles.titleFlex}>
+          <Image
+            style={styles.tinyLogo}
+            source={{
+              uri: `${item.ownerAvatarUrl}`,
+            }}
+          />
+          <View style={styles.titleContainer}> 
+            <Text fontWeight="bold" fontSize="subheading">
+              {item.fullName}
+            </Text>
+            <Text color="textSecondary">{item.description}</Text>
+            <Text style={styles.textContainer}>{item.language}</Text>
+          </View>
         </View>
+        <NumericData item={item} />
       </View>
-
-      <NumericData item={item} />
-    </View>
+    </TouchableOpacity>
   );
 };
 export default RepositoryItem;
